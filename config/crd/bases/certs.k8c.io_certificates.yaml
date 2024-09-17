@@ -1,0 +1,308 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.1
+  name: certificates.certs.k8c.io
+spec:
+  group: certs.k8c.io
+  names:
+    kind: Certificate
+    listKind: CertificateList
+    plural: certificates
+    singular: certificate
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: Certificate is the Schema for the certificates API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              CertificateSpec defines the desired state of Certificate.
+              A valid Certificate requires at least one of a CommonName, LiteralSubject, DNSName, or URI to be valid.
+            properties:
+              commonName:
+                description: Requested common name X509 certificate subject attribute.
+                type: string
+              dnsNames:
+                description: Requested DNS subject alternative names.
+                items:
+                  type: string
+                type: array
+              duration:
+                description: |-
+                  Requested 'duration' (i.e. lifetime) of the Certificate.
+                  If unset, this defaults to 90 days.
+                  Minimum accepted duration is 1 hour.
+                  Value must be in units "ms", "s", "m", "h", "d", "w", "y"
+                format: int64
+                type: integer
+                x-kubernetes-int-or-string: true
+              emailAddresses:
+                description: Requested email subject alternative names.
+                items:
+                  type: string
+                type: array
+              ipAddresses:
+                description: Requested IP address subject alternative names.
+                items:
+                  type: string
+                type: array
+              privateKey:
+                description: |-
+                  Private key options. These include the key algorithm and size, the used
+                  encoding and the rotation policy.
+                properties:
+                  algorithm:
+                    description: |-
+                      Algorithm is the private key algorithm of the corresponding private key
+                      for this certificate.
+
+                      If provided, allowed values are either `RSA`, `ECDSA` or `Ed25519`.
+                      If `algorithm` is specified and `size` is not provided,
+                      key size of 2048 will be used for `RSA` key algorithm and
+                      key size of 256 will be used for `ECDSA` key algorithm.
+                      key size is ignored when using the `Ed25519` key algorithm.
+                    enum:
+                    - RSA
+                    - ECDSA
+                    - Ed25519
+                    type: string
+                  encoding:
+                    description: |-
+                      The private key cryptography standards (PKCS) encoding for this
+                      certificate's private key to be encoded in.
+
+                      If provided, allowed values are `PKCS1` and `PKCS8` standing for PKCS#1
+                      and PKCS#8, respectively.
+                      Defaults to `PKCS1` if not specified.
+                    enum:
+                    - PKCS1
+                    - PKCS8
+                    type: string
+                  rotationPolicy:
+                    description: |-
+                      RotationPolicy controls how private keys should be regenerated when a
+                      re-issuance is being processed.
+
+                      If set to `Never`, a private key will only be generated if one does not
+                      already exist in the target `spec.secretName`. If one does exists but it
+                      does not have the correct algorithm or size, a warning will be raised
+                      to await user intervention.
+                      If set to `Always`, a private key matching the specified requirements
+                      will be generated whenever a re-issuance occurs.
+                      Default is `Never` for backward compatibility.
+                    enum:
+                    - Never
+                    - Always
+                    type: string
+                  size:
+                    description: |-
+                      Size is the key bit size of the corresponding private key for this certificate.
+
+                      If `algorithm` is set to `RSA`, valid values are `2048`, `4096` or `8192`,
+                      and will default to `2048` if not specified.
+                      If `algorithm` is set to `ECDSA`, valid values are `256`, `384` or `521`,
+                      and will default to `256` if not specified.
+                      If `algorithm` is set to `Ed25519`, Size is ignored.
+                      No other values are allowed.
+                    type: integer
+                type: object
+              secretRef:
+                description: |-
+                  Name of the Secret resource that will be automatically created and
+                  managed by this Certificate resource. It will be populated with a
+                  private key and certificate, signed by itself. The Secret
+                  resource lives in the same namespace as the Certificate resource.
+                properties:
+                  name:
+                    default: ""
+                    description: |-
+                      Name of the referent.
+                      This field is effectively required, but due to backwards compatibility is
+                      allowed to be empty. Instances of this type with an empty value here are
+                      almost certainly wrong.
+                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                    type: string
+                type: object
+                x-kubernetes-map-type: atomic
+              secretTemplate:
+                description: |-
+                  Defines annotations and labels to be copied to the Certificate's Secret.
+                  Labels and annotations on the Secret will be changed as they appear on the
+                  SecretTemplate when added or removed.
+                properties:
+                  annotations:
+                    additionalProperties:
+                      type: string
+                    description: Annotations is a key value map to be copied to the
+                      target Kubernetes Secret.
+                    type: object
+                  labels:
+                    additionalProperties:
+                      type: string
+                    description: Labels is a key value map to be copied to the target
+                      Kubernetes Secret.
+                    type: object
+                type: object
+              subject:
+                description: |-
+                  Requested set of X509 certificate subject attributes.
+                  The common name attribute is specified separately in the `commonName` field.
+                  Cannot be set if the `literalSubject` field is set.
+                properties:
+                  countries:
+                    description: Countries to be used on the Certificate.
+                    items:
+                      type: string
+                    type: array
+                  localities:
+                    description: Cities to be used on the Certificate.
+                    items:
+                      type: string
+                    type: array
+                  organizationalUnits:
+                    description: Organizational Units to be used on the Certificate.
+                    items:
+                      type: string
+                    type: array
+                  organizations:
+                    description: Organizations to be used on the Certificate.
+                    items:
+                      type: string
+                    type: array
+                  postalCodes:
+                    description: Postal codes to be used on the Certificate.
+                    items:
+                      type: string
+                    type: array
+                  provinces:
+                    description: State/Provinces to be used on the Certificate.
+                    items:
+                      type: string
+                    type: array
+                  streetAddresses:
+                    description: Street addresses to be used on the Certificate.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              uris:
+                description: Requested URI subject alternative names.
+                items:
+                  type: string
+                type: array
+              usages:
+                description: |-
+                  Requested key usages and extended key usages.
+                  These usages are used to set the `usages` field on the created X509 certificate.
+                  If unset, defaults to `digital signature` and `key encipherment`.
+                items:
+                  description: KeyUsage specifies valid usage contexts for keys.
+                  enum:
+                  - digital signature
+                  - content commitment
+                  - key encipherment
+                  - key agreement
+                  - data encipherment
+                  - cert sign
+                  - crl sign
+                  - encipher only
+                  - decipher only
+                  - any
+                  - server auth
+                  - client auth
+                  - code signing
+                  - email protection
+                  - ipsec end system
+                  - ipsec tunnel
+                  - ipsec user
+                  - timestamping
+                  - ocsp signing
+                  - microsoft sgc
+                  - netscape sgc
+                  type: string
+                type: array
+            type: object
+          status:
+            description: CertificateStatus defines the observed state of Certificate
+            properties:
+              conditions:
+                description: |-
+                  List of status conditions to indicate the status of certificates.
+                  Known condition types are `Ready` and `Issuing`.
+                items:
+                  description: CertificateCondition contains condition information
+                    for an Certificate.
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        LastTransitionTime is the timestamp corresponding to the last status
+                        change of this condition.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        Message is a description of the details of the last
+                        transition, complementing reason.
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        If set, this represents the .metadata.generation that the condition was
+                        set based upon.
+                        For instance, if .metadata.generation is currently 12, but the
+                        .status.condition[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the Certificate.
+                      format: int64
+                      type: integer
+                    status:
+                      description: Status of the condition, one of (`True`, `False`,
+                        `Unknown`).
+                      type: string
+                    type:
+                      description: Type of the condition, known values are (`Ready`,
+                        `Issuing`).
+                      enum:
+                      - Ready
+                      - Issuing
+                      type: string
+                  required:
+                  - status
+                  - type
+                  type: object
+                type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              notAfter:
+                description: |-
+                  The expiration time of the certificate stored in the secret named
+                  by this resource in `spec.secretName`.
+                format: date-time
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
