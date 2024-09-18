@@ -24,7 +24,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"raihankhan/kubecert/test/utils"
+	"github.com/raihankhan/kubecert/test/utils"
 )
 
 const namespace = "kubecert-system"

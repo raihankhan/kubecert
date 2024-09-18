@@ -38,7 +38,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
 	certsv1 "github.com/raihankhan/kubecert/api/v1"
-	"github.com/raihankhan/kubecert/internal/controller"
+	"github.com/raihankhan/kubecert/pkg/controller"
 	// +kubebuilder:scaffold:imports
 )
 
@@ -70,6 +70,7 @@ func main() {
 		"If set, the metrics endpoint is served securely via HTTPS. Use --metrics-secure=false to use HTTP instead.")
 	flag.BoolVar(&enableHTTP2, "enable-http2", false,
 		"If set, HTTP/2 will be enabled for the metrics and webhook servers")
+
 	opts := zap.Options{
 		Development: false,
 		TimeEncoder: zapcore.ISO8601TimeEncoder,
