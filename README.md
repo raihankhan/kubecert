@@ -1,4 +1,8 @@
-# kubecert
+# Kubecert
+
+[![Go Report Card](https://goreportcard.com/badge/github.com/raihankhan/kubecert)](https://goreportcard.com/report/github.com/raihankhan/kubecert)
+[![License: Apache License 2.0](https://img.shields.io/github/license/raihankhan/kubecert)](https://github.com/raihankhan/kubecert/blob/master/LICENSE.txt)
+
 
 A Kubernetes controller that automates the generation of self-signed TLS certificates for applications, simplifying the deployment process and ensuring secure communication. kubecert kubernetes controller continuously watches and reconciles `Certificate` custom resource to generate kubenetes native `Secret` resource using provided specifications. The `Secret` is expected to contain a `tls.crt` and a `tls.key` file which are actually a self-signed certificate and private key.
 
