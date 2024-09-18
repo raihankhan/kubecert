@@ -7,7 +7,7 @@ import (
 	"crypto/rand"
 	"crypto/rsa"
 	"fmt"
-	v1 "raihankhan/kubecert/api/v1"
+	v1 "github.com/raihankhan/kubecert/api/v1"
 )
 
 type PrivateKey interface {

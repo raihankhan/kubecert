@@ -2,7 +2,7 @@ package controller
 
 import (
 	"context"
-	apiv1 "raihankhan/kubecert/api/v1"
+	apiv1 "github.com/raihankhan/kubecert/api/v1"
 )
 
 func (r *CertificateReconciler) updateStatusCondition(ctx context.Context, cert *apiv1.Certificate, condition apiv1.CertificateCondition) error {

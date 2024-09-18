@@ -27,7 +27,7 @@ import (
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	certsv1 "raihankhan/kubecert/api/v1"
+	certsv1 "github.com/raihankhan/kubecert/api/v1"
 )
 
 var _ = Describe("Certificate Controller", func() {

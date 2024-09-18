@@ -5,10 +5,10 @@ import (
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
+	v1 "github.com/raihankhan/kubecert/api/v1"
 	certutil "k8s.io/client-go/util/cert"
 	"math/big"
 	"math/rand"
-	v1 "raihankhan/kubecert/api/v1"
 	"time"
 )
 

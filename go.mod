@@ -1,4 +1,4 @@
-module raihankhan/kubecert
+module github.com/raihankhan/kubecert
 
 go 1.23.0
 

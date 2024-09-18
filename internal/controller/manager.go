@@ -1,8 +1,8 @@
 package controller
 
 import (
+	certsv1 "github.com/raihankhan/kubecert/api/v1"
 	v1 "k8s.io/api/core/v1"
-	certsv1 "raihankhan/kubecert/api/v1"
 	ctrl "sigs.k8s.io/controller-runtime"
 )
 

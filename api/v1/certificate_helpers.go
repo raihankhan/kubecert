@@ -14,6 +14,9 @@ func (c *Certificate) GetSecretName() string {
 }
 
 func (c *Certificate) UpdateWithDefaultLabels(labels map[string]string) map[string]string {
+	if labels == nil {
+		labels = make(map[string]string)
+	}
 	labels["app.kubernetes.io/instance"] = c.Name
 	labels["app.kubernetes.io/component"] = "certificate"
 	labels["app.kubernetes.io/managed-by"] = "kubecert"
@@ -21,6 +24,9 @@ func (c *Certificate) UpdateWithDefaultLabels(labels map[string]string) map[stri
 }
 
 func (c *Certificate) UpdateWithDefaultSecretLabels(labels map[string]string) map[string]string {
+	if labels == nil {
+		labels = make(map[string]string)
+	}
 	labels["app.kubernetes.io/issued-by"] = c.Name
 	labels["app.kubernetes.io/component"] = "secret"
 	labels["app.kubernetes.io/managed-by"] = "kubecert"

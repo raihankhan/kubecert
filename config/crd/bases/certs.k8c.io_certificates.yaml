@@ -124,7 +124,8 @@ spec:
                       and will default to `2048` if not specified.
                       If `algorithm` is set to `ECDSA`, valid values are `256`, `384` or `521`,
                       and will default to `256` if not specified.
-                      If `algorithm` is set to `Ed25519`, Size is ignored.
+                      If `algorithm` is set to
+                      , Size is ignored.
                       No other values are allowed.
                     type: integer
                 type: object
