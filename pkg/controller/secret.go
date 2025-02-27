@@ -61,6 +61,7 @@ func (r *CertificateReconciler) ensureSecret(ctx context.Context, cert *apiv1.Ce
 		opts.notBefore = parsedCert.NotBefore
 		opts.notAfter = parsedCert.NotAfter
 	}
+
 	certPEM, privateKeyPEM, err := r.CreateCertificateAndPrivateKey(cert, opts)
 	if err != nil {
 		return err

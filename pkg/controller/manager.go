@@ -11,5 +11,6 @@ func (r *CertificateReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&certsv1.Certificate{}).
 		Owns(&v1.Secret{}).
-		Complete(r)
+		Watches()
+	Complete(r)
 }
